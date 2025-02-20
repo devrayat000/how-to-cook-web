@@ -1,4 +1,4 @@
-import { apiClient } from "@/lib/query-client";
+import { api } from "@/lib/query-client";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { notUndefined, useVirtualizer } from "@tanstack/react-virtual";
 import { useRef } from "react";
@@ -9,8 +9,14 @@ export default function RandomRecipesList() {
     data: { items: recipes },
   } = useSuspenseQuery({
     queryKey: ["recipes/random"],
-    queryFn: async () => {
-      const data = await apiClient.random(undefined);
+    queryFn: async ({ signal }) => {
+      const { data } = await api.recipesRandomList(undefined, {
+        cache: "force-cache",
+        headers: {
+          "Cache-Control": "max-age=600",
+        },
+        signal,
+      });
       return data;
     },
   });

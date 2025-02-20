@@ -1,4 +1,4 @@
-import { apiClient } from "@/lib/query-client";
+import { api } from "@/lib/query-client";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { useVirtualizer, notUndefined } from "@tanstack/react-virtual";
 import { useRef } from "react";
@@ -10,7 +10,12 @@ export default function CategoriesList() {
   } = useSuspenseQuery({
     queryKey: ["categories"],
     queryFn: async () => {
-      const data = await apiClient.categories(undefined);
+      const { data } = await api.categoriesList(undefined, {
+        cache: "force-cache",
+        headers: {
+          "Cache-Control": "max-age=86400",
+        },
+      });
       return data;
     },
   });

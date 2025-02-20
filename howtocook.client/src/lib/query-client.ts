@@ -1,5 +1,6 @@
-import { Client } from "@/generated/api";
-import { QueryClient } from "@tanstack/react-query";
+// import { Client } from "@/generated/api";
+import { Api } from "@/generated/api";
+import { QueryClient,QueryCache } from "@tanstack/react-query";
 
 import "@tanstack/react-query";
 
@@ -13,10 +14,17 @@ declare module "@tanstack/react-query" {
   }
 }
 
+export const queryCache = new QueryCache();
+
 export const queryClient = new QueryClient({
   defaultOptions: {
-    queries: {},
+    queries: {
+      networkMode: "offlineFirst",
+    },
   },
+  queryCache: queryCache,
 });
 
-export const apiClient = new Client();
+export const { api } = new Api({
+  baseApiParams: { mode: "same-origin" },
+});
