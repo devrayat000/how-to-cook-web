@@ -1,0 +1,33 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.13.35806.99 d17.13
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "howtocook.client", "howtocook.client\howtocook.client.esproj", "{0A5D4F0E-C527-658F-224B-A06573EC0A3B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HowToCook.Server", "HowToCook.Server\HowToCook.Server.csproj", "{07F96B8E-B22F-4A86-9470-7AC87B2DDC23}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0A5D4F0E-C527-658F-224B-A06573EC0A3B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0A5D4F0E-C527-658F-224B-A06573EC0A3B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0A5D4F0E-C527-658F-224B-A06573EC0A3B}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{0A5D4F0E-C527-658F-224B-A06573EC0A3B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0A5D4F0E-C527-658F-224B-A06573EC0A3B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0A5D4F0E-C527-658F-224B-A06573EC0A3B}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{07F96B8E-B22F-4A86-9470-7AC87B2DDC23}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{07F96B8E-B22F-4A86-9470-7AC87B2DDC23}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{07F96B8E-B22F-4A86-9470-7AC87B2DDC23}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{07F96B8E-B22F-4A86-9470-7AC87B2DDC23}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {85A680E9-192C-4EF9-8343-650A54C30DB7}
+	EndGlobalSection
+EndGlobal

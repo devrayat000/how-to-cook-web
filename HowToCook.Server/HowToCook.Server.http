@@ -1,0 +1,6 @@
+@HowToCook.Server_HostAddress = http://localhost:5130
+
+GET {{HowToCook.Server_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
