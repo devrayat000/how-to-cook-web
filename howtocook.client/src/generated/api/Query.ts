@@ -47,6 +47,10 @@ export type Recipes2QueryParameters = {
   id: number ;
 }
 
+export type RandomQueryParameters = {
+  count: number | undefined ;
+}
+
 export function areasUrl(): string {
   let url_ = getBaseUrl() + "/api/Areas";
   url_ = url_.replace(/[?&]$/, "");
@@ -725,6 +729,95 @@ export function setRecipes2Data(queryClient: QueryClient, updater: (data: Types.
  * @return OK
  */
 export function setRecipes2DataByQueryId(queryClient: QueryClient, queryKey: QueryKey, updater: (data: Types.RecipeResponse | undefined) => Types.RecipeResponse) {
+  queryClient.setQueryData(queryKey, updater);
+}
+    
+export function randomUrl(count: number | undefined): string {
+  let url_ = getBaseUrl() + "/api/Recipes/random?";
+if (count === null)
+    throw new Error("The parameter 'count' cannot be null.");
+else if (count !== undefined)
+    url_ += "count=" + encodeURIComponent("" + count) + "&";
+  url_ = url_.replace(/[?&]$/, "");
+  return url_;
+}
+
+let randomDefaultOptions: Omit<UseQueryOptions<Types.RecipeListResponse, unknown, Types.RecipeListResponse>, 'queryKey' | 'queryFn'> & Partial<Pick<UseQueryOptions<Types.RecipeListResponse, unknown, Types.RecipeListResponse>, 'queryFn'>> = {
+};
+export function getRandomDefaultOptions() {
+  return randomDefaultOptions;
+};
+export function setRandomDefaultOptions(options: typeof randomDefaultOptions) {
+  randomDefaultOptions = options;
+}
+
+export function randomQueryKey(count: number | undefined): QueryKey;
+export function randomQueryKey(...params: any[]): QueryKey {
+  if (params.length === 1 && isParameterObject(params[0])) {
+    const { count,  } = params[0] as RandomQueryParameters;
+
+    return trimArrayEnd([
+        'Client',
+        'random',
+        count as any,
+      ]);
+  } else {
+    return trimArrayEnd([
+        'Client',
+        'random',
+        ...params
+      ]);
+  }
+}
+export function __random(context: QueryFunctionContext) {
+  return Client().random(
+      context.queryKey[2] as number | undefined    );
+}
+
+export function useRandomQuery<TSelectData = Types.RecipeListResponse, TError = unknown>(dto: RandomQueryParameters, options?: Omit<UseQueryOptions<Types.RecipeListResponse, TError, TSelectData>, 'queryKey'>): UseQueryResult<TSelectData, TError>;
+/**
+ * @param count (optional) 
+ * @return OK
+ */
+export function useRandomQuery<TSelectData = Types.RecipeListResponse, TError = unknown>(count: number | undefined, options?: Omit<UseQueryOptions<Types.RecipeListResponse, TError, TSelectData>, 'queryKey'>): UseQueryResult<TSelectData, TError>;
+export function useRandomQuery<TSelectData = Types.RecipeListResponse, TError = unknown>(...params: any []): UseQueryResult<TSelectData, TError> {
+  let options: UseQueryOptions<Types.RecipeListResponse, TError, TSelectData> | undefined = undefined;
+  let count: any = undefined;
+  
+  if (params.length > 0) {
+    if (isParameterObject(params[0])) {
+      ({ count,  } = params[0] as RandomQueryParameters);
+      options = params[1];
+    } else {
+      [count, options] = params;
+    }
+  }
+
+  const metaContext = useContext(QueryMetaContext);
+  options = addMetaToOptions(options, metaContext);
+
+  return useQuery<Types.RecipeListResponse, TError, TSelectData>({
+    queryFn: __random,
+    queryKey: randomQueryKey(count),
+    ...randomDefaultOptions as unknown as Omit<UseQueryOptions<Types.RecipeListResponse, TError, TSelectData>, 'queryKey'>,
+    ...options,
+  });
+}
+/**
+ * @param count (optional) 
+ * @return OK
+ */
+export function setRandomData(queryClient: QueryClient, updater: (data: Types.RecipeListResponse | undefined) => Types.RecipeListResponse, count: number | undefined) {
+  queryClient.setQueryData(randomQueryKey(count),
+    updater
+  );
+}
+
+/**
+ * @param count (optional) 
+ * @return OK
+ */
+export function setRandomDataByQueryId(queryClient: QueryClient, queryKey: QueryKey, updater: (data: Types.RecipeListResponse | undefined) => Types.RecipeListResponse) {
   queryClient.setQueryData(queryKey, updater);
 }
     

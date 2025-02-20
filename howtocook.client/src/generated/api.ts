@@ -365,6 +365,48 @@ export class Client {
     }
 
     /**
+     * @param count (optional) 
+     * @return OK
+     */
+    random(count: number | undefined): Promise<RecipeListResponse> {
+        let url_ = this.baseUrl + "/api/Recipes/random?";
+        if (count === null)
+            throw new Error("The parameter 'count' cannot be null.");
+        else if (count !== undefined)
+            url_ += "count=" + encodeURIComponent("" + count) + "&";
+          url_ = url_.replace(/[?&]$/, "");
+
+        let options_: RequestInit = {
+            method: "GET",
+            headers: {
+                "Accept": "text/plain"
+            }
+        };
+
+        return this.http.fetch(url_, options_).then((_response: Response) => {
+            return this.processRandom(_response);
+        });
+    }
+
+    protected processRandom(response: Response): Promise<RecipeListResponse> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = RecipeListResponse.fromJS(resultData200);
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<RecipeListResponse>(null as any);
+    }
+
+    /**
      * @return OK
      */
     getWeatherForecast(): Promise<WeatherForecast[]> {
@@ -1242,6 +1284,7 @@ export function initPersister() {
   addResultTypeFactory('Client___ingredients', (data: any) => { const result = new Ingredient(); result.init(data); return result; });
   addResultTypeFactory('Client___recipes', (data: any) => { const result = new RecipeListResponse(); result.init(data); return result; });
   addResultTypeFactory('Client___recipes2', (data: any) => { const result = new RecipeResponse(); result.init(data); return result; });
+  addResultTypeFactory('Client___random', (data: any) => { const result = new RecipeListResponse(); result.init(data); return result; });
   addResultTypeFactory('Client___getWeatherForecast', (data: any) => { const result = new WeatherForecast(); result.init(data); return result; });
 
 

@@ -77,6 +77,37 @@ namespace HowToCook.Server.Controllers
             };
         }
 
+        [HttpGet("random")]
+        public async Task<ActionResult<RecipeListResponse>> GetRandomRecipe(int count = 12)
+        {
+            var recipes = await _context.Recipe
+                .Include(recipe => recipe.Category)
+                .Include(recipe => recipe.Area)
+                .Include(recipe => recipe.Ingredients)
+                .ThenInclude(ingredient => ingredient.Ingredient)
+                .OrderBy(r => EF.Functions.Random())
+                .Take(count)
+                .Select(recipe => new RecipeListResponseJson
+                {
+                    Id = recipe.Id,
+                    Name = recipe.Name,
+                    Thumb = recipe.Thumb,
+                    Category = recipe.Category.Name,
+                    Area = recipe.Area.Name,
+                })
+                .ToListAsync();
+
+            return new RecipeListResponse
+            {
+                Items = recipes,
+                Metadata = new ListMetadata
+                {
+                    Count = recipes.Count,
+                    Total = recipes.Count,
+                }
+            };
+        }
+
         // GET: api/Recipes/5
         [HttpGet("{id}")]
         public async Task<ActionResult<RecipeResponse>> GetRecipe(int id)
