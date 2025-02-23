@@ -3,6 +3,7 @@ import { useSuspenseQuery } from "@tanstack/react-query";
 import { notUndefined, useVirtualizer } from "@tanstack/react-virtual";
 import { useRef } from "react";
 import { Link } from "react-router";
+import { Skeleton } from "../ui/skeleton";
 
 export default function RandomRecipesList() {
   const {
@@ -25,13 +26,13 @@ export default function RandomRecipesList() {
     count: recipes?.length ?? 0,
     getScrollElement: () => parentRef.current,
     horizontal: true,
-    estimateSize: () => 224,
+    estimateSize: () => 320,
     getItemKey: (i) => notUndefined(recipes?.[i].id?.toString()),
     gap: 8,
   });
 
   return (
-    <section className="w-screen h-48 overflow-x-auto" ref={parentRef}>
+    <section className="w-screen h-60 overflow-x-auto" ref={parentRef}>
       <div
         className="relative h-full"
         style={{ width: rowVirtualizer.getTotalSize() }}
@@ -49,12 +50,14 @@ export default function RandomRecipesList() {
               }}
             >
               <img
-                src={recipe.thumb}
-                alt={recipe.name}
+                src={recipe.thumb!}
+                alt={recipe.name!}
                 className="block w-full aspect-video rounded-t-md"
               />
               <div className="p-1">
-                <p className="block text-sm font-medium">{recipe.name}</p>
+                <p className="text-sm font-medium line-clamp-1">
+                  {recipe.name}
+                </p>
                 <div className="flex justify-between items-start mt-1">
                   <p className="text-xs text-slate-400">{recipe.category}</p>
                   <p className="text-xs text-slate-400">{recipe.area}</p>
@@ -67,3 +70,33 @@ export default function RandomRecipesList() {
     </section>
   );
 }
+
+RandomRecipesList.Loader = function RandomRecipesSkeleton(
+  props: React.ComponentProps<"div">
+) {
+  return (
+    <div
+      {...props}
+      className="w-screen h-60 overflow-x-hidden flex gap-2 items-start"
+    >
+      {Array.from({ length: 8 }, (_, i) => {
+        return (
+          <div
+            className="border shrink-0 border-slate-200 rounded-md animate-pulse"
+            style={{ width: 320 }}
+            key={i}
+          >
+            <Skeleton className="aspect-video rounded-t-md" />
+            <div className="p-1">
+              <Skeleton className="h-5 rounded-md" />
+              <div className="flex justify-between items-start mt-1">
+                <Skeleton className="h-3 w-1/2 rounded-md" />
+                <Skeleton className="h-3 w-1/4 rounded-md" />
+              </div>
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  );
+};

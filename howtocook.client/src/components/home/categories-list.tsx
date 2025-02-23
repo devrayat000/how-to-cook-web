@@ -3,6 +3,7 @@ import { useSuspenseQuery } from "@tanstack/react-query";
 import { useVirtualizer, notUndefined } from "@tanstack/react-virtual";
 import { useRef } from "react";
 import { Link } from "react-router";
+import { Skeleton } from "../ui/skeleton";
 
 export default function CategoriesList() {
   const {
@@ -48,7 +49,7 @@ export default function CategoriesList() {
               }}
             >
               <img
-                src={category.thumb}
+                src={category.thumb!}
                 alt={category.name}
                 className="block w-full aspect-video"
               />
@@ -62,3 +63,21 @@ export default function CategoriesList() {
     </section>
   );
 }
+
+CategoriesList.Loader = function CategoriesListLoader(
+  props: React.ComponentProps<"div">
+) {
+  return (
+    <section
+      className="w-screen h-28 overflow-x-hidden items-start flex gap-2"
+      {...props}
+    >
+      {Array.from({ length: 8 }).map((_, i) => (
+        <Skeleton key={i} className="w-24 shrink-0 border p-1 rounded-md">
+          <div className="aspect-video" />
+          <div className="h-8" />
+        </Skeleton>
+      ))}
+    </section>
+  );
+};

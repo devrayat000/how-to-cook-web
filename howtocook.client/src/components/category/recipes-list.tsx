@@ -124,8 +124,8 @@ export default function CategoryRecipsList() {
               ref={isLast ? lastItemRef : undefined}
             >
               <img
-                src={recipe.thumb}
-                alt={recipe.name}
+                src={notUndefined(recipe.thumb)!}
+                alt={notUndefined(recipe.name)!}
                 className="block w-full aspect-video rounded-t-md"
               />
               <div className="p-1">
