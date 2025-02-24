@@ -8,7 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddDbContext<RecipeDbContext>(options =>
     options
-        .UseSqlite(builder.Configuration.GetConnectionString("DatabaseConnection"))
+        .UseSqlite(Environment.GetEnvironmentVariable("DATABASE_CONNECTION"))
         //.UseSeeding((context, _) => RecipeDbContext.SeedData(context))
 );
 
